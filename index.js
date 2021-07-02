@@ -294,4 +294,75 @@ booky.put("/publication/update/book/:isbn",(req,res)=>{
     });
     return res.json({publications:database.publication,books:database.book,message:"Sucessfully updated"});
     });
+/*  
+Route           /book/delete
+Description     delete a book
+Access          Public
+parameter      isbn
+Methods       DELETE
+*/ 
+booky.delete("/book/delete/:isbn",(req,res)=>{
+   const updatedBookDatabase=database.book.filter((book)=> book.ISBN!==req.params.isbn);
+database.book=updatedBookDatabase;
+return res.json({books:database.book});
+});
+/*  
+Route           /book/delete/author
+Description     delete an author of book
+Access          Public
+parameter      isbn,author id
+Methods       DELETE
+*/ 
+booky.delete("/book/delete/author/:isbn/:authorId",(req,res)=>{
+  database.book.forEach((book)=>{
+      if(book.ISBN===req.params.isbn)
+      {
+          const newAuthorList=book.author.filter(
+              (author)=>author!==parseInt(req.params.authorId)
+          );
+          book.author=newAuthorList;
+          return;
+      }
+  });
+  database.author.forEach((author)=>{
+    if(author.id===parseInt(req.params.authorId))
+    {
+        const newBooksList=author.books.filter(
+            (book)=>book!==req.params.isbn
+        );
+        author.books=newBooksList;
+        return;
+    }
+});
+return res.json({books:database.book,author:database.author});
+ });
+
+ /*  
+Route           /publication/delete/book
+Description     delete a book form publication
+Access          Public
+parameter      isbn,publication id
+Methods       DELETE
+*/ 
+booky.delete("/publication/delete/book/:isbn/:pubId",(req,res)=>{
+    database.publication.forEach((publication)=>{
+        if(publication.id===parseInt(req.params.pubId))
+        {
+            const newBookList=publication.books.filter(
+                (book)=>book!==req.params.isbn
+            );
+            publication.books=newBookList;
+            return;
+        }
+    });
+    database.book.forEach((book)=>{
+      if(book.ISBN===req.params.isbn)
+      {
+          book.publication=0;
+          return;
+      }
+  });
+  return res.json({books:database.book,publications:database.publication});
+   });
+   
 booky.listen(3000,()=>console.log("server is running🧨🧨"));
