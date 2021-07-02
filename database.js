@@ -1,7 +1,7 @@
-const book=[
+let book=[
     {
      ISBN:"12345Book",
-     title:"Happiness",
+     title:"Happinesos",
      pubDate:"2021-07-07",
      language:"en",
      numPage:250,
@@ -9,6 +9,16 @@ const book=[
      publication:[1],
      category:["tech","programming","education","thriller"],
     },
+    {
+        ISBN:"12345Booki",
+        title:"Happiness",
+        pubDate:"2021-07-07",
+        language:"en",
+        numPage:250,
+        author:[1],
+        publication:[2],
+        category:["tech","programming","education","thriller"],
+       },
 ];
 const author=[
     {
@@ -39,5 +49,7 @@ module.exports={
     author,
     publication
 }
+
+
 
 
